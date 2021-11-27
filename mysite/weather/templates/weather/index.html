@@ -1,13 +1,151 @@
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<
-<br><br><br><br><br><br><br><br>
+  <head>
+     <style type="text/css">
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 300px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+      }
+    </style>
 
-<h1 align="center">{{location}}</h1>>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Локальный CSS -->
+    <link rel="stylesheet" href="{% static 'weather/css/main.css' %}">
 
-</body>
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>World Weather</title>
+  </head>
+  <body>
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+
+
+
+<!-- Блок с интересными местами -->
+
+<br>
+<div align="center" >
+    {% for name in names_images %}
+    <a href="?place={{name}}"><img src="http://127.0.0.1:8000/static/weather/images/{{name}}.jpg" width="100"></a>
+    {% endfor %}
+</div>
+<br>
+
+<!-- Форма места -->
+
+<form align="center" action= '' method="POST">
+{% csrf_token %}
+    <input  type="text" name="place" placeholder="місце/адреса" required>
+
+    <input type="submit" value="Погода" />
+</form>
+<br>
+<!-- КАРТА -->
+
+<script>
+      // Initialize and add the map
+      function initMap() {
+        // The location of Place
+
+        var lat;
+        lat = {{lat}}
+        var lng= {{lon}};
+
+        const place = { lat: lat , lng: lng };
+
+        // The map, centered at place
+
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 7,
+          center: place,
+        });
+        // The marker, positioned at Uluru
+        const marker = new google.maps.Marker({
+          position: place,
+          map: map,
+        });
+      }
+    </script>
+
+<h1 align="center">{{place}} <img src="{{date_7.0.12}}"></h1>
+<h3 align="center">{{adres}} </h3>
+
+
+
+<div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDi_HeAAJ9AfpJns9PLZdJsfGhOeNx7e9c&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+
+
+
+
+<p class="title"; align="center" >{{temp_now}}°</p>
+<h5  align="center">відчувається як: {{temp_feel_now}}°</h5>
+<h5  align="center">min: {{date_7.0.5}}° max: {{date_7.0.6}}°</h5>
+<br>
+
+
+
+    <!-- Раскрывающиеся блоки ПОДРОБНО -->
+{% for date in date_7 %}
+<div class="accordion accordion-flush" id="b{{date.13}}b">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="v{{date.13}}v">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c{{date.13}}c" aria-expanded="false" aria-controls="a{{date.13}}a">
+        <h6>{{date.20}}</h6>&nbsp<h4>{{date.0}} </h4>&nbsp<img src="{{date.12}}">&nbsp<h6>
+          {% if date.19 %}
+            {{date.19}}%
+          {% endif %}
+
+          &nbsp{{date.21}}</h6> &nbsp &nbsp <h2>{{date.1}}°</h2>&nbsp
+          <h5> <span class="badge rounded-pill bg-dark"> {{date.5}}°</span></h5>
+
+      </button>
+    </h2>
+    <div id="c{{date.13}}c" class="accordion-collapse collapse" aria-labelledby="v{{date.13}}v" data-bs-parent="#b{{date.13}}b">
+      <div class="accordion-body">
+ <ul class="list-group list-group-flush">
+  <li class="list-group-item">Денна t°: {{date.1}}° (відчувається як: {{date.7}}°)</li>
+  <li class="list-group-item">Вранці t°: {{date.2}}° (відчувається як: {{date.8}}°)</li>
+  <li class="list-group-item">Ввечері t°: {{date.3}}° (відчувається як: {{date.9}}°)</li>
+  <li class="list-group-item">Вночі t°: {{date.4}}° (відчувається як: {{date.10}}°)</li>
+  <li class="list-group-item">min t°: {{date.5}}° &nbsp  max t°: {{date.6}}°</li>
+   <li class="list-group-item">Фаза Місяця: {{date.11}}</li>
+   <li class="list-group-item">Атмосферний тиск: {{date.14}}</li>
+   <li class="list-group-item">Точка роси: {{date.15}}</li>
+   <li class="list-group-item">Швидкість вітру: {{date.16}} м/с &nbsp Пориви вітру до {{date.17}} м/с</li>
+</ul>
+
+    </div>
+  </div>
+
+{% endfor %}
+<br><br>
+<div> ПОТОЧНИЙ ЧАС: {{current_time}} <br>
+IP: {{real_ip}}<br></div>
+
+
+
+
+  </body>
 </html>
